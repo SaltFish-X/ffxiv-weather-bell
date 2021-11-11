@@ -79,6 +79,22 @@ class App extends React.Component<any, AppState> {
     const list = zone && matches.length === 1 ? W.find({ zone, hourMask: { 0: true, 8: true, 16: true } }) : [];
     return (
       <div className="app">
+        <div className="event">
+        <div className="event_zone">
+            <div className="condition-title">
+              <span>{'ULK财富密码实时播报'}</span>
+              <span className="g-pointer" onClick={()=>{
+                const input = document.createElement('textarea');
+                document.body.appendChild(input);
+                input.value = ulkCfmm()
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+              }}>{'(点击复制)'}</span>
+            </div>
+            <span className="g-break-spaces" id="cfmm">{ulkCfmm()}</span>
+          </div>
+        </div>
         <div className="condition">
           <div className="condition_zone">
             <span className="condition-title">
@@ -281,11 +297,11 @@ class App extends React.Component<any, AppState> {
           </div>
         )}
         <div className="footer">
-          {_t('FFXIV Weather Bell')} 2106a
+          {_t('FFXIV Weather Bell')} 2021
           <span className="footer_separator">·</span>
           <a href="https://github.com/Asvel/ffxiv-weather-bell/blob/master/LICENSE.txt">License</a>
           <span className="footer_separator">·</span>
-          <a href="https://github.com/Asvel/ffxiv-weather-bell">Code</a>
+          <a href="https://github.com/Asvel/ffxiv-weather-bell">Code fork from Asvel</a>
         </div>
       </div>
     );
@@ -475,3 +491,35 @@ document.title = _t('FFXIV Weather Bell');
 const container = document.createElement('div');
 document.body.appendChild(container);
 ReactDOM.render(<App />, container);
+
+// const ulkZones: string[][] = [['冰岛薄雾','冰岛暴雪','火岛暴雪']]
+function ulkCfmm() {
+  const ulkFilte = (condition: { zone: W.Zone; desiredWeathers: number[] }) => {
+    const arr = W.find(condition)
+      .map((m) => {
+        const match = m(false);
+        return match;
+      })
+      .slice(0, 8)
+      .filter((m) => m.begin.getDate() === new Date().getDate());
+    return arr.map((e) => strftime('%H:%M', e.begin)).join(" ");
+  };
+
+  const PagosFog = ulkFilte({
+    zone: "Eureka Pagos",
+    desiredWeathers: [1],
+  });
+
+  const PagosBlizzards = ulkFilte({
+    zone: "Eureka Pagos",
+    desiredWeathers: [5],
+  });
+
+  const PyrosBlizzards = ulkFilte({
+    zone: "Eureka Pyros",
+    desiredWeathers: [3],
+  });
+  const CFMM = `冰岛薄雾：${PagosFog}\n冰岛暴雪：${PagosBlizzards}\r\n火岛暴雪：${PyrosBlizzards}`;
+  return CFMM
+}
+

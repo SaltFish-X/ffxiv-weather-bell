@@ -311,3 +311,11 @@ button:active {
 .footer_separator {
   margin: 0 6px;
 }
+
+.g-break-spaces {
+  white-space: break-spaces;
+}
+
+.g-pointer{
+  cursor: pointer;
+}
