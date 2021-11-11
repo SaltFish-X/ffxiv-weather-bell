@@ -1,4 +1,4 @@
-# [FFXIV Weather Bell](https://asvel.github.io/ffxiv-weather-bell/)
+# [FFXIV Weather Bell](https://saltfish-x.github.io/ffxiv-weather-bell/)
 
 Weather forecast and alarm for Final Fantasy XIV.
 
